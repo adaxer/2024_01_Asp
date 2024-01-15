@@ -1,0 +1,8 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@root = https://localhost:7139
+
+GET {{root}}
+###
+
+GET {{root}}/html
+###
