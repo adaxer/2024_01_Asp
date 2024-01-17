@@ -1,0 +1,20 @@
+﻿@page
+@model HelloRazor.Pages.Movies.IndexModel
+@{
+}
+
+<h1>Movie List</h1>
+
+@if (Model.Movies == null)
+{
+    <div class="alert alert-information">Loading movies...</div>
+}
+else
+{
+    <ul>
+        @foreach (var movie in Model.Movies)
+        {
+            <li>@movie.Title</li>
+        }
+    </ul>
+}
