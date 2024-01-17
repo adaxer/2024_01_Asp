@@ -4,6 +4,8 @@ using Serilog.Events;
 using Serilog;
 using System.Diagnostics;
 using HelloRazor.Lib;
+using Microsoft.EntityFrameworkCore;
+using HelloRazor.Data;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -31,6 +33,8 @@ catch (Exception ex)
 {
     Log.Logger.Fatal(ex, "Builder failed");
 }
+builder.Services.AddDbContext<MoviesContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("MoviesContext") ?? throw new InvalidOperationException("Connection string 'MoviesContext' not found.")));
 
 var app = builder.Build();
 
@@ -50,7 +54,7 @@ try
     else
     {
         //app.UseSerilogRequestLogging();
-        app.UseCustomRequestLogging();
+        //app.UseCustomRequestLogging();
     }
 
     app.UseHttpsRedirection();
