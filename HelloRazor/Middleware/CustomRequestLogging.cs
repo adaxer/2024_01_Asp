@@ -3,7 +3,7 @@ using System.Text;
 
 namespace HelloRazor.Middleware;
 
-public class RequestLogging
+public class CustomRequestLogging
 {
     private readonly RequestDelegate _next;
     private readonly ILogger _logger;
@@ -11,7 +11,7 @@ public class RequestLogging
     private bool _isActive = false;
     private int _bodyLogSize = 10;
 
-    public RequestLogging(RequestDelegate next, ILogger<RequestLogging> logger, IConfiguration configuration)
+    public CustomRequestLogging(RequestDelegate next, ILogger<CustomRequestLogging> logger, IConfiguration configuration)
     {
         _next = next;
         _logger = logger;

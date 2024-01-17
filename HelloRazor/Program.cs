@@ -50,7 +50,7 @@ try
     else
     {
         //app.UseSerilogRequestLogging();
-        app.UseRequestLogging();
+        app.UseCustomRequestLogging();
     }
 
     app.UseHttpsRedirection();
