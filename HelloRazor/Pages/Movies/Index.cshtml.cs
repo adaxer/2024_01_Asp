@@ -10,7 +10,7 @@ public class IndexModel : PageModel
     private readonly IMovieService movieService;
     private readonly ILogger<IndexModel> logger;
 
-    public IndexModel(IMovieService movieService, ILogger<IndexModel> logger, ILogger logger1)
+    public IndexModel(IMovieService movieService, ILogger<IndexModel> logger)
     {
         this.movieService = movieService;
         this.logger = logger;

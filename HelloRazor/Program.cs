@@ -49,7 +49,8 @@ try
     }
     else
     {
-        app.UseSerilogRequestLogging();
+        //app.UseSerilogRequestLogging();
+        app.UseRequestLogging();
     }
 
     app.UseHttpsRedirection();
