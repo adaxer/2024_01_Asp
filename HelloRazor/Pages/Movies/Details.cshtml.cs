@@ -2,16 +2,17 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HelloRazor.Models;
+using HelloRazor.Interfaces;
 
 namespace HelloRazor.Pages.Movies;
 
 public class DetailsModel : PageModel
 {
-    private readonly HelloRazor.Data.MoviesContext _context;
+    private readonly IMovieService service;
 
-    public DetailsModel(HelloRazor.Data.MoviesContext context)
+    public DetailsModel(IMovieService service)
     {
-        _context = context;
+        this.service = service;
     }
 
     public Movie Movie { get; set; } = default!;
@@ -23,7 +24,7 @@ public class DetailsModel : PageModel
             return NotFound();
         }
 
-        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await service.GetMovieById(id.Value);
         if (movie == null)
         {
             return NotFound();

@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using HelloRazor.Models;
+using HelloRazor.Interfaces;
 
 namespace HelloRazor.Pages.Movies;
 
 public class IndexModel : PageModel
 {
-    private readonly HelloRazor.Data.MoviesContext _context;
+    private readonly IMovieService service;
 
-    public IndexModel(HelloRazor.Data.MoviesContext context)
+    public IndexModel(IMovieService service)
     {
-        _context = context;
+        this.service = service;
     }
 
-    public IList<Movie> Movie { get;set; } = default!;
+    public IList<Movie> Movies { get;set; } = default!;
 
     public async Task OnGetAsync()
     {
-        Movie = await _context.Movies.ToListAsync();
+        Movies = (await service.GetMovies()).ToList();
     }
 }

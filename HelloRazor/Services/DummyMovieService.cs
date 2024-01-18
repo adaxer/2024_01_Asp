@@ -6,6 +6,11 @@ namespace HelloRazor.Services;
 
 public class DummyMovieService : IMovieService
 {
+    public Task<Movie?> GetMovieById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IEnumerable<Movie>> GetMovies()
     {
         Trace.WriteLine("Trace debug von DummyMovieService");

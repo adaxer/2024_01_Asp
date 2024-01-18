@@ -20,7 +20,7 @@ try
 {
     // Add services to the container.
     builder.Services.AddRazorPages();
-    builder.Services.AddScoped<IMovieService, DummyMovieService>();
+    builder.Services.AddScoped<IMovieService, MovieService>();
 
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
