@@ -7,6 +7,8 @@ using HelloRazor.Lib;
 using Microsoft.EntityFrameworkCore;
 using HelloRazor.Data;
 using HelloRazor;
+using CommonLib;
+using System.Reflection;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -32,6 +34,8 @@ try
 
     builder.Services.AddDbContext<MoviesContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("MoviesContext") ?? throw new InvalidOperationException("Connection string 'MoviesContext' not found.")));
+
+    RegisterExternalServices(builder.Services);
 }
 catch (Exception ex)
 {
@@ -89,3 +93,31 @@ catch (Exception ex)
 }
 
 app.Run();
+
+//////////////////////////////////////////////////////
+
+void RegisterExternalServices(IServiceCollection services)
+{
+    List<IModule> modules = new List<IModule>();
+    foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies())
+    {
+        modules.AddRange(GetModulesForAssembly(assembly));
+    }
+    foreach (var module  in modules)
+    {
+        module.ConfigureServices(services);
+    }
+}
+
+IEnumerable<IModule> GetModulesForAssembly(Assembly assembly)
+{
+    Log.Logger.Debug($"Checking Assembly {assembly}");
+    var types = assembly.GetTypes().Where(t=>t.IsAssignableTo(typeof(IModule)) && t.IsClass);
+    foreach (var type in types)
+    {
+        if(Activator.CreateInstance(type) is IModule module)
+        {
+            yield return module;
+        }
+    }
+}
