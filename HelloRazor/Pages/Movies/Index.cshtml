@@ -10,6 +10,16 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+<form method="get">
+    <button type="submit" class="btn btn-secondary" name="loadData" value="true">Load Summary</button>
+</form>
+
+@if (Request.Query["loadData"] == "true")
+{
+    @await Component.InvokeAsync("MovieDetail")
+}
+
 <table class="table table-striped">
     <thead>
         <tr>

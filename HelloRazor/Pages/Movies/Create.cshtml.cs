@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using HelloRazor.Models;
+using HelloRazor.Interfaces;
 
 namespace HelloRazor.Pages.Movies;
 
 public class CreateModel : PageModel
 {
-    private readonly HelloRazor.Data.MoviesContext _context;
+    private readonly IMovieService service;
 
-    public CreateModel(HelloRazor.Data.MoviesContext context)
+    public CreateModel(IMovieService service)
     {
-        _context = context;
+        this.service = service;
     }
 
     public IActionResult OnGet()
@@ -29,8 +30,7 @@ public class CreateModel : PageModel
             return Page();
         }
 
-        _context.Movies.Add(Movie);
-        await _context.SaveChangesAsync();
+        await service.SaveMovie(Movie);
 
         return RedirectToPage("./Index");
     }

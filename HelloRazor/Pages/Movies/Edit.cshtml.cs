@@ -2,16 +2,18 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HelloRazor.Models;
+using HelloRazor.Interfaces;
+using System.Diagnostics;
 
 namespace HelloRazor.Pages.Movies;
 
 public class EditModel : PageModel
 {
-    private readonly HelloRazor.Data.MoviesContext _context;
+    private readonly IMovieService service;
 
-    public EditModel(HelloRazor.Data.MoviesContext context)
+    public EditModel(IMovieService service)
     {
-        _context = context;
+        this.service = service;
     }
 
     [BindProperty]
@@ -24,7 +26,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var movie =  await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await service.GetMovieById(id.Value);
         if (movie == null)
         {
             return NotFound();
@@ -42,29 +44,17 @@ public class EditModel : PageModel
             return Page();
         }
 
-        _context.Attach(Movie).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await service.SaveMovie(Movie);
         }
-        catch (DbUpdateConcurrencyException)
+        catch (Exception ex)
         {
-            if (!MovieExists(Movie.Id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
+            Trace.TraceError($"{ex}");
+            return NotFound();
         }
 
         return RedirectToPage("./Index");
-    }
-
-    private bool MovieExists(int id)
-    {
-        return _context.Movies.Any(e => e.Id == id);
     }
 }

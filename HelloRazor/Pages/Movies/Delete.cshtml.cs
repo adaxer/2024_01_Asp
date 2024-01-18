@@ -2,16 +2,17 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using HelloRazor.Models;
+using HelloRazor.Interfaces;
 
 namespace HelloRazor.Pages.Movies;
 
 public class DeleteModel : PageModel
 {
-    private readonly HelloRazor.Data.MoviesContext _context;
+    private readonly IMovieService service;
 
-    public DeleteModel(HelloRazor.Data.MoviesContext context)
+    public DeleteModel(IMovieService service)
     {
-        _context = context;
+        this.service = service;
     }
 
     [BindProperty]
@@ -24,7 +25,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+        var movie = await service.GetMovieById(id.Value);
 
         if (movie == null)
         {
@@ -44,14 +45,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        var movie = await _context.Movies.FindAsync(id);
-        if (movie != null)
-        {
-            Movie = movie;
-            _context.Movies.Remove(Movie);
-            await _context.SaveChangesAsync();
-        }
-
+        await service.RemoveMovieById(id.Value);
         return RedirectToPage("./Index");
     }
 }

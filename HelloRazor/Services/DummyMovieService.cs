@@ -11,6 +11,11 @@ public class DummyMovieService : IMovieService
         throw new NotImplementedException();
     }
 
+    public Task<Dictionary<string, int>> GetMovieCountForGenres()
+    {
+        throw new NotImplementedException();
+    }
+
     public Task<IEnumerable<Movie>> GetMovies()
     {
         Trace.WriteLine("Trace debug von DummyMovieService");
@@ -52,5 +57,15 @@ public class DummyMovieService : IMovieService
                 }
         };
         return Task.FromResult(movies as IEnumerable<Movie>);
+    }
+
+    public Task RemoveMovieById(int value)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Movie?> SaveMovie(Movie movie)
+    {
+        throw new NotImplementedException();
     }
 }
