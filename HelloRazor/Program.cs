@@ -40,11 +40,19 @@ catch (Exception ex)
 
 var app = builder.Build();
 
-if(app.Environment.IsDevelopment())
+try
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetService<MoviesContext>();
-    SeedData.CreateDummyData(db!);
+    if (app.Environment.IsDevelopment())
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetService<MoviesContext>();
+        SeedData.CreateDummyData(db!);
+    }
+}
+catch (Exception ex)
+{
+    Log.Logger.Fatal(ex, "Seeding failed. Make sure to have a directory App_Data created in the project, and performed dotnet ef database update");
+    throw;
 }
 
 try
@@ -63,7 +71,7 @@ try
     else
     {
         //app.UseSerilogRequestLogging();
-        //app.UseCustomRequestLogging();
+        app.UseCustomRequestLogging();
     }
 
     app.UseHttpsRedirection();
