@@ -8,6 +8,7 @@ public class Movie
     [Required(ErrorMessage ="Title is required")]
     public string Title { get; set; } = string.Empty;
     [DataType(DataType.Date)]
+    [Display(Name ="Date of Release")]
     public DateTime ReleaseDate { get; set; }
     public string? Genre { get; set; }
     public decimal Price { get; set; }

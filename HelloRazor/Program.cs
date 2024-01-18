@@ -6,6 +6,7 @@ using System.Diagnostics;
 using HelloRazor.Lib;
 using Microsoft.EntityFrameworkCore;
 using HelloRazor.Data;
+using HelloRazor;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
@@ -28,15 +29,23 @@ try
         .WriteTo.Console());
 
     builder.Services.AddSingleton<Microsoft.Extensions.Logging.ILogger>(sp => sp.GetService<ILogger<Program>>()!);
+
+    builder.Services.AddDbContext<MoviesContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("MoviesContext") ?? throw new InvalidOperationException("Connection string 'MoviesContext' not found.")));
 }
 catch (Exception ex)
 {
     Log.Logger.Fatal(ex, "Builder failed");
 }
-builder.Services.AddDbContext<MoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("MoviesContext") ?? throw new InvalidOperationException("Connection string 'MoviesContext' not found.")));
 
 var app = builder.Build();
+
+if(app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetService<MoviesContext>();
+    SeedData.CreateDummyData(db!);
+}
 
 try
 {
