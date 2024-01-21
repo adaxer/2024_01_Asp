@@ -1,6 +1,4 @@
-﻿using HelloRazor.Middleware;
-
-namespace Microsoft.AspNetCore.Builder;
+﻿namespace HelloRazor.Middleware;
 
 public static class MiddlewareExtensions
 {
