@@ -1,3 +1,5 @@
+using HelloRazor.Api;
+using HelloRazor.Client;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HelloRazor.Pages;
@@ -11,8 +13,9 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-    public void OnGet()
+    public async Task OnGet()
     {
-
+        var api = new WeatherForecastApi("https://localhost:7164");
+        var greeting = await api.WeatherForecastGreetingGetAsync();
     }
 }
