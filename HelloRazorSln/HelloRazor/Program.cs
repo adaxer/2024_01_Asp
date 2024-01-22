@@ -63,7 +63,7 @@ public class Program
             else
             {
                 //app.UseSerilogRequestLogging();
-                app.UseCustomRequestLogging();
+                //app.UseCustomRequestLogging();
             }
 
             app.UseHttpsRedirection();
