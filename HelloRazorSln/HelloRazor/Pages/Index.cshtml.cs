@@ -13,9 +13,9 @@ public class IndexModel : PageModel
         _logger = logger;
     }
 
-    public async Task OnGet()
+    public void OnGet()
     {
-        var api = new WeatherForecastApi("https://localhost:7164");
-        var greeting = await api.WeatherForecastGreetingGetAsync();
+        //var api = new WeatherForecastApi("https://localhost:7164");
+        //var greeting = await api.WeatherForecastGreetingGetAsync();
     }
 }
